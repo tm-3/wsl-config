@@ -15,3 +15,9 @@ sudo echo "set bell-style none" >> /etc/inputrc
 
 # Install NVM
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+
+nvm install latest
+
+
+npm config set strict-ssl false
