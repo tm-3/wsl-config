@@ -6,10 +6,6 @@ QUALITY=$2
 VSCODE_REMOTE_BIN=$3
 SERVER_TAR_FILE_WIN=$4
 
-# Manually download the VSCode Remote SErver TAR File and place it somewhere convenient. Set the SERVER_TAR_FILE variable to the proper path.
-
-SERVER_TAR_FILE="~/.vscode-server/vscode-server-linux-x64.tar.gz"
-
 
 # Check if this version is already installed
 if [ ! -d "$VSCODE_REMOTE_BIN/$COMMIT" ]; then
@@ -43,6 +39,7 @@ if [ ! -d "$VSCODE_REMOTE_BIN/$COMMIT" ]; then
 
 	mkdir -p "$VSCODE_REMOTE_BIN"
 
+	SERVER_TAR_FILE="~/code/vscode-server-linux-x64.tar.gz"
 
 	# Unpack the .tar.gz file to a temporary folder name
 	printf "Unpacking:   0%%";
