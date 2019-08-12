@@ -1,23 +1,17 @@
-#!/bin/bash
+#!/bin/bash -i
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Copy Files
-
-if (( $EUID != 0 )); then
-    
-    sudo $DIR/initWsl.sh
-    exit
-fi
 
 read -N1 -p 'This will copy all scripts into /usr/local/bin/wslDev and make them executable. Would you like to proceed? (y/N) ' COPY_SCRIPTS
 echo
 
 if [ $COPY_SCRIPTS = "y" ] 
 then
-    mkdir -p /usr/local/bin/wslDev
-    cp $DIR/*.sh /usr/local/bin/wslDev
-    chmod +x /usr/local/bin/wslDev/*.sh
+    sudo mkdir -p /usr/local/bin/wslDev
+    sudo cp $DIR/*.sh /usr/local/bin/wslDev
+    sudo chmod +x /usr/local/bin/wslDev/*.sh
 else 
     exit
 fi
@@ -30,10 +24,10 @@ echo
 if [ $INCLUDE_IN_PATH = "y" ] 
 then 
 
-    echo export PATH=$PATH:/usr/local/bin/wslDev >> $HOME/.bashrc     
+    sudo echo "export PATH=\$PATH:/usr/local/bin/wslDev" >> $HOME/.profile     
 fi
 
-exec bash
+source ~/.profile
 
 # Proxy - Prompt 
 
@@ -52,36 +46,32 @@ echo
 
 if  [ $UPDATE_LINUX = "y" ]
 then 
-    /usr/local/bin/wslDev/update.sh
+    sudo /usr/local/bin/wslDev/update.sh
 fi
 
 # Configure Environment
 
 # I am not giving you a choice here. The bell is dumb.
 
-if  ! grep -q "^set bell-style none" /etc/inputrc; then
-  echo -e "\nset bell-style none" >> /etc/inputrc
-fi
+echo -e "set bell-style none" >> $HOME/.inputrc
 
 # Not sure this is necessary, but on the DEBIAN wsl distro, nano doesn't show color highlighting.
 
 find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> $HOME/.nanorc
 # Install Basic Linux Packages
 
-apt install git libc6 libstdc++6 python-minimal ca-certificates tar curl wget
+sudo apt install git libc6 libstdc++6 python-minimal ca-certificates tar curl wget
 
 # Setup cURL and wget to ignore things they shouldn't ignore
 # I should solve this someday 
 echo "check_certificate = off" >> $HOME/.wgetrc
 echo "insecure" >> $HOME/.curlrc
-git config --global http.sslVerify false
-
 # Install NVM
 
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-chmod 777 $HOME/.nvm 
+# chmod 777 $HOME/.nvm 
 
-exec bash
+source ~/.bashrc
 
 nvm install --lts
 npm config set strict-ssl false
@@ -89,17 +79,22 @@ npm config set strict-ssl false
 
 # git config
 
+echo
 echo "git configuration"
 
-git config global --add http.sslverify false
+git config --global --replace-all http.sslverify false
 
 read -p "Name: " NAME
 read -p "Email: " EMAIL
 
-git config global --add user.name $NAME
-git config global --add user.email $EMAIL
+git config --global --replace-all user.name "$NAME"
+git config --global --replace-all user.email "$EMAIL"
 
 
 # NPM Global Packages 
 
 npm install -g @microsoft/rush eslint esm generator-code http-server ts-node typescript yo 
+
+
+source ~/.bashrc
+source ~/.profile

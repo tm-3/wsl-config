@@ -30,7 +30,11 @@ I have not thoroughly tested this, but it works on `Ubuntu` and `Debian` WSL dis
 
 ## Installation
 
-Clone this repo into a location of your choice and run the `initWsl.sh` script. You will be prompted for some information along the way.
+Copy or clone this repo into a location of your choice and run the `initWsl.sh` script. You will be prompted for some information along the way. I typically create a symlink to my source on my windows drive so on a new installation I would do something like:
+
+```
+ln -s /mnt/c/code code && ./code/wsl-config/initWsl.sh
+```
 
 ## Scripts
 
