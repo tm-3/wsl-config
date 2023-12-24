@@ -60,7 +60,7 @@ echo -e "set bell-style none" >> $HOME/.inputrc
 find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> $HOME/.nanorc
 # Install Basic Linux Packages
 
-sudo apt install git libc6 libstdc++6 python-minimal ca-certificates tar curl wget
+sudo apt install git libc6 libstdc++6 python2-minimal ca-certificates tar curl wget
 
 # Setup cURL and wget to ignore things they shouldn't ignore
 # I should solve this someday 
@@ -68,13 +68,13 @@ echo "check_certificate = off" >> $HOME/.wgetrc
 echo "insecure" >> $HOME/.curlrc
 # Install NVM
 
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+# wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 # chmod 777 $HOME/.nvm 
 
-source ~/.bashrc
+# source ~/.bashrc
 
-nvm install --lts
-npm config set strict-ssl false
+# nvm install --lts
+# npm config set strict-ssl false
 
 
 # git config
